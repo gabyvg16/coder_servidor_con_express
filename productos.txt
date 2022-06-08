@@ -12,7 +12,7 @@
 		"id": 2
 	},
 	{
-		"title": "ProductoB",
+		"title": "ProductoC",
 		"price": 35,
 		"thumbnail": "ThumbnailB",
 		"id": 3

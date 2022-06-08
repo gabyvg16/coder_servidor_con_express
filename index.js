@@ -87,16 +87,28 @@ const app = express();
 const puerto = 8080;
 
 // Productos disponibles
-const archivo = new Contenedor('./productos.txt');
+const archivoProductos = new Contenedor('./productos.txt');
+
+// Ruta principal
+app.get('/', (req, res) => {
+    res.send('<h1>Hola, soy la página principal</h1> <h2><a href="./productos">Productos</a></h2> <h2><a href="./productoRandom">Producto random</a><h2/>');
+})
 
 // Ruta que devuelve array con todos los productos disponibles en el servidor
-app.get('/productos', (req, res) => {
-    res.send('Hola, soy productos');
+app.get('/productos', async (req, res) => {
+    let productos = await archivoProductos.getAll();
+    res.send(`<h1>Listado de productos</h1> 
+              <ul> ${productos.map(producto => { 
+                  return (`<li>${producto.title}, precio: $ ${producto.price}</li>`) })} 
+              </ul>`);
 })
 
 // Ruta que devuelve un producto elegido al azar entre todos los productos disponibles
-app.get('/productoRandom', (req, res) => {
-    res.send('Hola, soy producto random');
+app.get('/productoRandom', async (req, res) => {
+    let productos = await archivoProductos.getAll();
+    let random = Math.floor(Math.random() * productos.length);
+    res.send(`<h1>Producto random</h1> 
+              <ul><li>${productos[random].title}, precio: $ ${productos[random].price}</li></ul>`);
 })
 
 app.listen(puerto, (error) => {
